@@ -30,6 +30,7 @@ class Minefield
   # it should also clear any adjacent cells as well. This is the action
   # when the player clicks on the cell.
   def clear(row, col)
+    contains_mine?(row,col)
     if !@mine_locations.include?([row,col])
       @clear_locations << [row,col]
     end
@@ -39,7 +40,7 @@ class Minefield
   # Check if any cells have been uncovered that also contained a mine. This is
   # the condition used to see if the player has lost the game.
   def any_mines_detonated?
-    !@detonated_mines.nil?
+    @detonated_mine.length >= 1
   end
 
   # Check if all cells that don't have mines have been uncovered. This is the

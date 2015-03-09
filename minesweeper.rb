@@ -161,5 +161,6 @@ class Minesweeper < Gosu::Window
   end
 end
 
+
 game = Minesweeper.new
 game.show
