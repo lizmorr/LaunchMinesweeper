@@ -6,7 +6,8 @@ class Minefield
     @row_count = row_count
     @mine_count = mine_count #need to do something with this!
     @mine_locations = plant_mines
-    binding.pry
+    @clear_locations = []
+    @detonated_mine =[]
   end
 
   def plant_mines
@@ -22,19 +23,23 @@ class Minefield
 
   # Return true if the cell been uncovered, false otherwise.
   def cell_cleared?(row, col)
-    false
+    @clear_locations.include? [row,col]
   end
 
   # Uncover the given cell. If there are no adjacent mines to this cell
   # it should also clear any adjacent cells as well. This is the action
   # when the player clicks on the cell.
   def clear(row, col)
+    if !@mine_locations.include?([row,col])
+      @clear_locations << [row,col]
+    end
   end
+  #need to figure out how to check cells around
 
   # Check if any cells have been uncovered that also contained a mine. This is
   # the condition used to see if the player has lost the game.
   def any_mines_detonated?
-    false
+    !@detonated_mines.nil?
   end
 
   # Check if all cells that don't have mines have been uncovered. This is the
@@ -50,6 +55,8 @@ class Minefield
 
   # Returns true if the given cell contains a mine, false otherwise.
   def contains_mine?(row, col)
-    false
+    if @mine_locations.include?([row,col])
+      @detonated_mine << [row,col]
+    end
   end
 end
