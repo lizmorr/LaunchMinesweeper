@@ -46,7 +46,10 @@ class Minefield
   # Check if all cells that don't have mines have been uncovered. This is the
   # condition used to see if the player has won the game.
   def all_cells_cleared?
-    false
+    total_cells = @column_count * @row_count
+    total_open_cells = total_cells - @mine_count
+    if @clear_locations.length == total_open_cells
+    end
   end
 
   # Returns the number of mines that are surrounding this cell (maximum of 8).
@@ -56,7 +59,7 @@ class Minefield
     count += 1 if @mine_locations.include?([row+1,col-1])
     count += 1 if @mine_locations.include?([row+1,col+1])
     count += 1 if @mine_locations.include?([row,col+1])
-    count += 1 if @mine_locations.include?([row+1,col-1])
+    count += 1 if @mine_locations.include?([row,col-1])
     count += 1 if @mine_locations.include?([row-1,col+1])
     count += 1 if @mine_locations.include?([row-1,col])
     count += 1 if @mine_locations.include?([row-1,col-1])
