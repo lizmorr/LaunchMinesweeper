@@ -4,7 +4,7 @@ class Minefield
   def initialize(row_count, column_count, mine_count)
     @column_count = column_count
     @row_count = row_count
-    @mine_count = mine_count #need to do something with this!
+    @mine_count = mine_count
     @mine_locations = plant_mines
     @clear_locations = []
     @detonated_mine =[]
@@ -51,7 +51,16 @@ class Minefield
 
   # Returns the number of mines that are surrounding this cell (maximum of 8).
   def adjacent_mines(row, col)
-    0
+    count = 0
+    count += 1 if @mine_locations.include?([row+1,col])
+    count += 1 if @mine_locations.include?([row+1,col-1])
+    count += 1 if @mine_locations.include?([row+1,col+1])
+    count += 1 if @mine_locations.include?([row,col+1])
+    count += 1 if @mine_locations.include?([row+1,col-1])
+    count += 1 if @mine_locations.include?([row-1,col+1])
+    count += 1 if @mine_locations.include?([row-1,col])
+    count += 1 if @mine_locations.include?([row-1,col-1])
+    count
   end
 
   # Returns true if the given cell contains a mine, false otherwise.
