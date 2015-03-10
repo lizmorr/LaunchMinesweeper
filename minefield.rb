@@ -13,7 +13,7 @@ class Minefield
   def plant_mines
     mine_locations = []
     until mine_locations.length == @mine_count
-      location = [rand(@row_count-1),rand(@column_count-1)]
+      location = [rand(@row_count),rand(@column_count)]
       if !mine_locations.include?(location)
         mine_locations << location
       end
@@ -33,9 +33,26 @@ class Minefield
     contains_mine?(row,col)
     if !@mine_locations.include?([row,col])
       @clear_locations << [row,col]
+      also_clear(row+1,col)
+      also_clear(row+1,col-1)
+      also_clear(row+1,col+1)
+      also_clear(row,col+1)
+      also_clear(row,col-1)
+      also_clear(row-1,col)
+      also_clear(row-1,col+1)
+      also_clear(row-1,col-1)
     end
   end
-  #need to figure out how to check cells around
+
+  def also_clear(row, col)
+    checked_cells =[]
+    if row.between?(0,row_count-1) && col.between?(0,column_count-1) &&
+       !@mine_locations.include?([row,col]) && !@clear_locations.include?([row,col])
+        clear(row,col)
+    else
+      checked_cells << [row,col]
+    end
+  end
 
   # Check if any cells have been uncovered that also contained a mine. This is
   # the condition used to see if the player has lost the game.
@@ -49,6 +66,7 @@ class Minefield
     total_cells = @column_count * @row_count
     total_open_cells = total_cells - @mine_count
     if @clear_locations.length == total_open_cells
+      true
     end
   end
 
