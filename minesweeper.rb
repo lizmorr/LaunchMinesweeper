@@ -42,7 +42,7 @@ class Minesweeper < Gosu::Window
   end
 
   def reset
-    @field = Minefield.new(20, 20, 125)
+    @field = Minefield.new(20, 20, 50)
     @state = :running
   end
 

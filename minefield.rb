@@ -34,14 +34,11 @@ class Minefield
     if !@mine_locations.include?([row,col])
       @clear_locations << [row,col]
       if adjacent_mines(row, col) == 0
-        also_clear(row+1,col)
-        also_clear(row+1,col-1)
-        also_clear(row+1,col+1)
-        also_clear(row,col+1)
-        also_clear(row,col-1)
-        also_clear(row-1,col)
-        also_clear(row-1,col+1)
-        also_clear(row-1,col-1)
+        [-1,0,1].each do |x_adjust|
+          [-1,0,1].each do |y_adjust|
+            also_clear(row + x_adjust, col + y_adjust)
+          end
+        end
       end
     end
   end
