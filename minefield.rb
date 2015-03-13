@@ -33,14 +33,16 @@ class Minefield
     contains_mine?(row,col)
     if !@mine_locations.include?([row,col])
       @clear_locations << [row,col]
-      also_clear(row+1,col)
-      also_clear(row+1,col-1)
-      also_clear(row+1,col+1)
-      also_clear(row,col+1)
-      also_clear(row,col-1)
-      also_clear(row-1,col)
-      also_clear(row-1,col+1)
-      also_clear(row-1,col-1)
+      if adjacent_mines(row, col) == 0
+        also_clear(row+1,col)
+        also_clear(row+1,col-1)
+        also_clear(row+1,col+1)
+        also_clear(row,col+1)
+        also_clear(row,col-1)
+        also_clear(row-1,col)
+        also_clear(row-1,col+1)
+        also_clear(row-1,col-1)
+      end
     end
   end
 
@@ -63,24 +65,18 @@ class Minefield
   # Check if all cells that don't have mines have been uncovered. This is the
   # condition used to see if the player has won the game.
   def all_cells_cleared?
-    total_cells = @column_count * @row_count
-    total_open_cells = total_cells - @mine_count
-    if @clear_locations.length == total_open_cells
-      true
-    end
+    total_open_cells = @column_count * @row_count - @mine_count
+    @clear_locations.length == total_open_cells
   end
 
   # Returns the number of mines that are surrounding this cell (maximum of 8).
   def adjacent_mines(row, col)
     count = 0
-    count += 1 if @mine_locations.include?([row+1,col])
-    count += 1 if @mine_locations.include?([row+1,col-1])
-    count += 1 if @mine_locations.include?([row+1,col+1])
-    count += 1 if @mine_locations.include?([row,col+1])
-    count += 1 if @mine_locations.include?([row,col-1])
-    count += 1 if @mine_locations.include?([row-1,col+1])
-    count += 1 if @mine_locations.include?([row-1,col])
-    count += 1 if @mine_locations.include?([row-1,col-1])
+    [-1,0,1].each do |x_adjust|
+      [-1,0,1].each do |y_adjust|
+        count += 1 if @mine_locations.include?([row + x_adjust, col + y_adjust])
+      end
+    end
     count
   end
 
